@@ -1,5 +1,5 @@
 import NotFound from './NotFound'
-import JwtLogin from './login/Login'
+import JwtLogin from '../sessions/auth/Login3'
 
 const sessionRoutes = [
     {
