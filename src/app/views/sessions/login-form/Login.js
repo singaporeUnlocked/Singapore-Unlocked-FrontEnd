@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 import history from '../../../../history'
 
+import { connect, useSelector } from 'react-redux';
+import { Redirect, withRouter } from 'react-router-dom';
+
 /*--------------- Material UI --------------*/
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -24,6 +27,7 @@ import {
 
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import * as loginActions from "../../../redux/action/UserAction";
 
 
 // assets
@@ -33,7 +37,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import useScriptRef from '../../../../hooks/useScriptRef';
 import AnimateButton from '../../../components/Buttons/AnimateButton';
 
-const Login = () => {
+const Login = (props) => {
 
     //Set error message
     const [message, setMessage] = useState('')
@@ -52,14 +56,12 @@ const Login = () => {
         event.preventDefault();
     };
     
-    const handleFormSubmit = async (event) => {
+    const handleFormSubmit = (values) => {
         setLoading(true)
 
         try {
-
-        //TODO: Change login feature
             console.log("login button pressed")
-            history.push('/')
+            props.loginUser(values.email, values.password)
 
         } catch (e) {
             console.log(e)
@@ -102,9 +104,10 @@ const Login = () => {
                     try {
                         if (scriptedRef.current) {
                             setStatus({ success: true });
-                            handleFormSubmit();
+                            handleFormSubmit(values);
                             setSubmitting(false);
                         }
+
                     } catch (err) {
                         console.error(err);
                         if (scriptedRef.current) {
@@ -215,4 +218,14 @@ const Login = () => {
     );
 }
 
-export default Login
+
+const mapDispatchToProps = (dispatch) => ({
+    loginUser: (email, password) => dispatch(loginActions.loginRequest(email, password))
+})
+
+const mapStateToProps = ({ loginResponse }) => ({
+    loginResponse
+})
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login));
+
