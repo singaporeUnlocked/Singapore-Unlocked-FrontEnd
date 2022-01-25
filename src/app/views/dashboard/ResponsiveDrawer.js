@@ -9,6 +9,7 @@ import InboxIcon from '@mui/icons-material/Inbox';
 import DraftsIcon from '@mui/icons-material/Drafts';
 import { Grid, Typography } from '@mui/material';
 import Logo from '../../components/logo/Logo';
+import { styled } from '@mui/material/styles';
 
 const ResponsiveDrawer = ({children}) => {
     const [selectedIndex, setSelectedIndex] = React.useState(1);
@@ -17,12 +18,21 @@ const ResponsiveDrawer = ({children}) => {
         setSelectedIndex(index);
     };
 
+    const DashboardLayoutRoot = styled('div')(({ theme }) => ({
+        display: 'flex',
+        flex: '1 1 auto',
+        maxWidth: '100%',
+        paddingTop: 64,
+        [theme.breakpoints.up('lg')]: {
+            paddingLeft: 350
+        }
+    }));
+
     return (
-        <div>
-        <Box sx={{ width: '100%', maxWidth: 300, marginLeft: 1}}>
-            <List component="nav" aria-label="main mailbox folders">
+        <>
+            <Box sx={{ width: '100%', maxWidth: 300, marginLeft: 1, display: 'flex', flexDirection: 'column', height: '100%', position: 'fixed'}}>
+            <List component="nav">
                 <Grid container justifyContent="center" alignItems="center">
-                    
                     <Grid item>
                         <br />
                         <br />
@@ -35,7 +45,7 @@ const ResponsiveDrawer = ({children}) => {
                     <Grid item xs={12}>
                         <Typography
                             gutterBottom
-                            variant='h3'
+                            variant='h4'
                             textAlign='center'>
                             Unlocked Dashboard
                         </Typography>
@@ -113,10 +123,20 @@ const ResponsiveDrawer = ({children}) => {
             </List>
         </Box>
 
-        <div>
-            { children }
-        </div>
-    </div>
+            <DashboardLayoutRoot>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        flex: '1 1 auto',
+                        flexDirection: 'column',
+                        width: '100%',
+                        backgroundColor: 'lightcyan'
+                    }}
+                >
+                    {children}
+                    </Box>
+            </DashboardLayoutRoot>
+    </>
     );
 }
 

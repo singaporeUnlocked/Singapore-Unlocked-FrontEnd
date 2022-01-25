@@ -13,12 +13,32 @@ import "./App.css";
 import { ThemeProvider } from "@mui/material/styles";
 import { CssBaseline, StyledEngineProvider } from "@mui/material";
 import themes from './themes';
+import theme from './themes/themeDB'
 import ResponsiveDrawer from './app/views/dashboard/ResponsiveDrawer'
 import JwtLogin from './app/views/sessions/auth/Login3'
 
 const App = () => {
 
     const customization = useSelector((state) => state.customization);
+    const authRoute = () => {
+        return (
+            <div>
+                <ResponsiveDrawer >
+                <Switch>
+                    {
+                        sessionRoutes.map((item, i) => (
+                            <Route exact
+                                key={i}
+                                path={item.path}
+                                component={ item.component }
+                            />
+                        ))
+                    }    
+                </Switch>    
+                </ResponsiveDrawer>
+            </div>
+        )
+    }
 
     return (
         <AppContext.Provider value={{ routes }}>
@@ -29,21 +49,15 @@ const App = () => {
                 <Switch>
                 <StyledEngineProvider injectFirst>
                     <ThemeProvider theme={themes(customization)}>
-                                        <CssBaseline />
-                                        <Route exact path="/" component={JwtLogin} />
-                                        
-                    <ResponsiveDrawer> 
-                    {
-                        sessionRoutes.map((item, i) => (
-                            <Route exact
-                            key={i}
-                            path={item.path}
-                            component={item.component}
-                            />
-                        ))
-                    }                    
-                    </ResponsiveDrawer>           
-                    </ThemeProvider>
+                    <CssBaseline />
+                    
+                    <Route exact path="/" component={JwtLogin} />
+                 
+                                    </ThemeProvider>
+                                    <ThemeProvider theme={theme}>
+
+                                    <Route component={authRoute} />
+                                </ThemeProvider>
                 </StyledEngineProvider>
                 </Switch>
             </MSuspense>
