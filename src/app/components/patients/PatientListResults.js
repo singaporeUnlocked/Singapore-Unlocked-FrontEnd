@@ -50,7 +50,9 @@ export const PatientListResults = ({ patients, ...rest }) => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {patients.slice(0, limit).map((patient) => (
+
+                            {
+                                patients.slice(0, limit).map((patient) => (
                                 <TableRow
                                     hover
                                     key={patient.patientId}

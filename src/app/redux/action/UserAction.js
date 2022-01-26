@@ -11,9 +11,14 @@ export const loginRequest = (email, password) => (dispatch) => {
             "password": password
         }
     ).then((res) => {
-        dispatch({
-            type: LOGIN_REQUEST,
-            payload: res.data,
-        })
+        if (res.status == "200") {
+            dispatch({
+                type: LOGIN_REQUEST,
+                payload: res.data,
+            })
+        } else {
+            
+        }
+
     })
 }

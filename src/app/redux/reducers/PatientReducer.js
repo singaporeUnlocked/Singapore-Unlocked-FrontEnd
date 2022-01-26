@@ -1,17 +1,20 @@
 import {
-    GET_CLIENT_LIST
+    GET_PATIENT_LIST
 } from '../action/PatientAction'
+import axios from '../../../axios'
 
 const initialState = {
-    clientList: [],
+    patientList: [],
+    loaded: false
 }
 
-const PatientReducer = function (state = initialState, action) {
+export default function PatientReducer(state = initialState, action) {
     switch (action.type) {
-        case GET_CLIENT_LIST: {
+        case GET_PATIENT_LIST: {
             return {
                 ...state,
-                clientList: [...action.payload],
+                patientList: [...action.payload],
+                loaded: true
             }
         }
         default:
@@ -21,4 +24,12 @@ const PatientReducer = function (state = initialState, action) {
     }
 }
 
-export default PatientReducer;
+
+export async function getPatientList(dispatch) {
+    await axios.get('/patients').then((res) => {
+        dispatch({
+            type: GET_PATIENT_LIST,
+            payload: res.data,
+        })
+    })
+}

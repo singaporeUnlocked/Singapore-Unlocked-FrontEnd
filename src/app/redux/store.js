@@ -1,21 +1,9 @@
-import thunk from 'redux-thunk'
-import { createStore, applyMiddleware, compose } from 'redux'
+import { createStore, applyMiddleware } from 'redux'
+import thunkMiddleware from 'redux-thunk'
+import { composeWithDevTools } from 'redux-devtools-extension'
 import RootReducer from './reducers/RootReducer'
 
-const initialState = {}
-const middlewares = [thunk]
-let devtools = (x) => x
+const composedEnhancer = composeWithDevTools(applyMiddleware(thunkMiddleware))
 
-if (
-    process.env.NODE_ENV !== 'production' &&
-    process.browser &&
-    window.__REDUX_DEVTOOLS_EXTENSION__
-) {
-    devtools = window.__REDUX_DEVTOOLS_EXTENSION__()
-}
-
-export const store = createStore(
-    RootReducer,
-    initialState,
-    compose(applyMiddleware(...middlewares), devtools)
-)
+// The store now has the ability to accept thunk functions in `dispatch`
+export const store = createStore(RootReducer, composedEnhancer)
