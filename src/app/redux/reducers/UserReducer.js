@@ -1,9 +1,11 @@
 import {
     LOGIN_REQUEST
 } from '../action/UserAction'
+import axios from '../../../axios'
 
 const initialState = {
     UserDetails: [],
+    isAuth: null
 }
 
 const UserReducer = function (state = initialState, action) {
@@ -11,7 +13,8 @@ const UserReducer = function (state = initialState, action) {
         case LOGIN_REQUEST: {
             console.log(action.payload);
             return {
-                UserDetails: action.payload
+                UserDetails: action.payload,
+                isAuth: action.isAuth
             }
         }
         default:
@@ -20,5 +23,32 @@ const UserReducer = function (state = initialState, action) {
             }
     }
 }
+
+
+export const loginRequest = (email, password) => (dispatch) => {
+    
+    axios.post('/login',
+        {
+            "email": email,
+            "password": password
+        }
+    ).then((res) => {
+        if (res.status == "200") {
+            dispatch({
+                type: LOGIN_REQUEST,
+                payload: res.data,
+                isAuth: true
+            })
+        } else {
+            dispatch({
+                type: LOGIN_REQUEST,
+                payload: [],
+                isAuth: false
+            }) 
+        }
+
+    })
+}
+
 
 export default UserReducer;

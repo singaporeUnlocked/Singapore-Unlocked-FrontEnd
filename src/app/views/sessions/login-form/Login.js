@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import history from '../../../../history'
 
-import { connect, useSelector } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { Redirect, withRouter } from 'react-router-dom';
 
 /*--------------- Material UI --------------*/
@@ -27,7 +27,7 @@ import {
 
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import * as loginActions from "../../../redux/action/UserAction";
+import * as loginActions from "../../../redux/reducers/UserReducer";
 
 
 // assets
@@ -44,9 +44,11 @@ const Login = (props) => {
     const [Loading, setLoading] = useState(false)
     const [showPassword, setShowPassword] = useState(false);
     const [checked, setChecked] = useState(true);
-
+    const dispatch = useDispatch();
     const scriptedRef = useScriptRef();
     const theme = useTheme();
+
+    const user = useSelector((state) => state.user)
     
     const handleClickShowPassword = () => {
         setShowPassword(!showPassword);
@@ -55,14 +57,21 @@ const Login = (props) => {
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
     };
+
+    if (user.isAuth === true) {
+        history.push("/dashboard/patients");
+    } else if (user.isAuth === false ){
+        //show error message
+        setMessage("Invalid email or password")
+
+    }
     
     const handleFormSubmit = (values) => {
         setLoading(true)
-
         try {
+            dispatch(loginActions.loginRequest(values.email, values.password))
             console.log("login button pressed")
-            props.loginUser(values.email, values.password)
-
+            
         } catch (e) {
             console.log(e)
             setMessage(e.message)
@@ -219,13 +228,5 @@ const Login = (props) => {
 }
 
 
-const mapDispatchToProps = (dispatch) => ({
-    loginUser: (email, password) => dispatch(loginActions.loginRequest(email, password))
-})
-
-const mapStateToProps = ({ loginResponse }) => ({
-    loginResponse
-})
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login));
+export default withRouter(Login);
 
