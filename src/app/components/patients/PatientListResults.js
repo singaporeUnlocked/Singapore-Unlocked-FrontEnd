@@ -2,6 +2,7 @@ import { useState } from 'react';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import PropTypes from 'prop-types';
 import { format } from 'date-fns';
+import history from '../../../history'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import {
     Avatar,
@@ -56,7 +57,7 @@ export const PatientListResults = ({ patients, ...rest }) => {
                                 <TableRow
                                         hover
                                         key={patient.patientId}
-                                        
+                                        onClick={() => history.push("/dashboard/patient?id="+ patient.patientId )}
                                 >
                                     <TableCell>
                                         <Box

@@ -12,7 +12,7 @@ const sessionRoutes = [
         component: Patients
     },
     {
-        path: '/dashboard/patients/*',
+        path: '/dashboard/patient',
         component: Patient
     }
 ]

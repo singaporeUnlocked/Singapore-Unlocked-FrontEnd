@@ -2,6 +2,12 @@ import { Avatar, Box, Card, CardContent, Grid, Typography } from '@mui/material'
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import PsychologyIcon from '@mui/icons-material/Psychology';
 
+const colour = (value) => {
+  if (value > 80) { return "success.main" }
+  if (value > 60) { return "warning.main" }
+  return "error.main"  
+}
+
 export const CardViewPatient = (props) => (
   <Card
     sx={{ height: '100%' }}
@@ -19,10 +25,10 @@ export const CardViewPatient = (props) => (
             gutterBottom
             variant="overline"
           >
-            {props.aType}
+            {props.atype}
           </Typography>
           <Typography
-            color="textPrimary"
+            color={ colour(props.ratings)  }  
             variant="h4"
           >
             {props.ratings}

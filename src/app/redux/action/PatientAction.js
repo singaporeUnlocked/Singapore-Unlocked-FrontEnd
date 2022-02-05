@@ -1,1 +1,2 @@
 export const GET_PATIENT_LIST = 'GET_PATIENT_LIST'
+export const GET_PATIENT_DATA = "GET_PATIENT_DATA"
